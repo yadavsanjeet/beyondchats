@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+const api = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL + "/api",
 });
 
-export const fetchArticles = () => API.get("/articles");
-export const fetchArticleById = (id) => API.get(`/articles/${id}`);
-export const createArticle = (data) => API.post("/articles", data);
-export const runAIUpdate = (id) => API.post(`/articles/${id}/ai-update`);
+export const fetchArticles = () => api.get("/articles");
+export const fetchArticleById = (id) => api.get(`/articles/${id}`);
+export const createArticle = (data) => api.post("/articles", data);
+export const runAIUpdate = (id) => api.post(`/articles/${id}/ai-update`);
 
+export default api;
