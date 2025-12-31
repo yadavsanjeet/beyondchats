@@ -104,22 +104,34 @@ To ensure stability and smooth execution, **Groq’s OpenAI-compatible LLM** was
 The UI is intentionally kept simple and professional to make article comparison easy for reviewers.
 
 ---
-## Architecture / Data Flow
+## Architecture 
 
-React Frontend (Vercel)
-|
-| API Requests
-v
-Node.js Backend (Render)
-|
-| CRUD + AI Enhancement Logic
-v
-MongoDB Atlas
-|
-| External Services
-v
-Groq LLM + Google Search (Serper)
+The project follows a simple and scalable client–server architecture where the frontend, backend, database, and AI services interact in a clear sequence.
 
+---
+
+### Detailed Data Flow
+
+1. The **React frontend** requests articles from the backend using REST APIs.
+2. The **Node.js backend** fetches and stores articles in **MongoDB Atlas**.
+3. When an article is created, only the **original content** is stored initially.
+4. On clicking **Run AI Update**, the backend triggers the AI enhancement flow:
+   - Searches the article title on Google using **Serper API**.
+   - Selects the top two external blog/article links.
+   - Scrapes the main readable content from those links.
+   - Sends original and reference content to the **Groq LLM**.
+5. The **LLM generates an improved version** of the article.
+6. The backend saves the **updated article** and **reference links** in the database.
+7. The frontend fetches and displays both **original** and **AI-enhanced** articles.
+
+---
+
+### Key Design Decisions
+
+- AI processing is handled entirely on the **backend** to keep API keys secure.
+- The frontend remains lightweight and focuses only on presentation and user interaction.
+- The AI update process is synchronous to ensure updated content is saved before being displayed.
+- Clear separation of concerns is maintained between frontend, backend, database, and external services.
 
 ---
 
@@ -127,42 +139,47 @@ Groq LLM + Google Search (Serper)
 
 ### 1. Clone the Repository
 
-bash
-git clone <repository-url>
-cd beyondchats
+- bash
+- git clone <repository-url>
+- cd beyondchats
 
+---
+### 2.Backend Setup##
+- cd backend
+- npm install
+- Create a .env file inside the backend directory:
 
-2. ##Backend Setup##
--cd backend
--npm install
--Create a .env file inside the backend directory:
+- PORT=5000
+- MONGO_URI=your_mongodb_atlas_connection_string
+- GROQ_API_KEY=your_groq_api_key
+- SERPER_API_KEY=your_serper_api_key
+- Start the backend server:
+- npm run dev
+- Backend runs at: http://localhost:5000
 
-PORT=5000
-MONGO_URI=your_mongodb_atlas_connection_string
-GROQ_API_KEY=your_groq_api_key
-SERPER_API_KEY=your_serper_api_key
--Start the backend server:
--npm run dev
+---
 
-Backend runs at: http://localhost:5000
-3. Frontend Setup
-cd frontend
-npm install
-npm run dev
-Frontend runs at: http://localhost:5173
+### 3. Frontend Setup
+- cd frontend
+- npm install
+- npm run dev
+- Frontend runs at: http://localhost:5173
+  
+---
 
-How to Use the Application:
-1.Open the live frontend URL 
-2.Create a new article with meaningful content
-3.Open the article detail page
-4.Click Run AI Update
-5.Wait a few seconds for processing
-6.you will be able to see updated article as well
+### How to Use the Application:
+1. Open the live frontend URL 
+2. Create a new article with meaningful content
+3. Open the article detail page
+4. Click Run AI Update
+5. Wait a few seconds for processing
+6. you will be able to see updated article as well
 
+---
 
-Conclusion:
+### Conclusion:
 
 This project demonstrates a complete real-world workflow involving web scraping, REST APIs, AI-driven content enhancement, and frontend integration.
 The focus was on building a reliable, readable, and production-style system rather than a simple prototype.
 
-Thank you for reviewing my submission.
+- Thank you for reviewing my submission.
